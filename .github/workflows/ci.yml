@@ -27,15 +27,19 @@ jobs:
 
       - name: Check coverage threshold
         run: |
-          COVERAGE=$(grep -oP '(?<=<ratio>)(.*?)(?=</ratio>)' target/site/jacoco/jacoco.xml | awk '{print int($1*100)}')
-          echo "COVERAGE: $COVERAGE"
-          if [ -z "$COVERAGE" ]; then
+          COVERED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/attribute::covered)' target/site/jacoco/jacoco.xml)
+          MISSED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/attribute::missed)' target/site/jacoco/jacoco.xml)
+
+          if [ -z "$COVERED" ] || [ -z "$MISSED" ]; then
             echo "Ошибка: не удалось получить покрытие тестами."
             exit 1
           fi
+
+          TOTAL=$((COVERED + MISSED))
+          COVERAGE=$((COVERED * 100 / TOTAL))
+
+          echo "Покрытие тестами: $COVERAGE%"
           if [ "$COVERAGE" -lt 70 ]; then
             echo "Покрытие тестами ниже 70%: $COVERAGE%"
             exit 1
-          else
-            echo "Покрытие тестами: $COVERAGE%"
           fi
