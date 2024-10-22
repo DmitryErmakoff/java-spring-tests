@@ -1,11 +1,9 @@
 package ru.d3m4k.javaspringtests;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import static org.assertj.core.api.Assertions.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.d3m4k.javaspringtests.algorithm.Dijkstra;
 
 import java.util.Map;
 
@@ -18,9 +16,9 @@ class DijkstraTest {
 		dijkstra.addEdge(1, 2, 1);
 
 		Map<Integer, Integer> distances = dijkstra.shortestPath(0);
-		Assertions.assertThat(distances).containsEntry(0, 0);
-		Assertions.assertThat(distances).containsEntry(1, 1);
-		Assertions.assertThat(distances).containsEntry(2, 2);
+		assertThat(distances).containsEntry(0, 0);
+		assertThat(distances).containsEntry(1, 1);
+		assertThat(distances).containsEntry(2, 2);
 	}
 
 	@Test
@@ -33,10 +31,10 @@ class DijkstraTest {
 		dijkstra.addEdge(2, 3, 5);
 
 		Map<Integer, Integer> distances = dijkstra.shortestPath(0);
-		Assertions.assertThat(distances).containsEntry(0, 0);
-		Assertions.assertThat(distances).containsEntry(1, 3);
-		Assertions.assertThat(distances).containsEntry(2, 1);
-		Assertions.assertThat(distances).containsEntry(3, 4);
+		assertThat(distances).containsEntry(0, 0);
+		assertThat(distances).containsEntry(1, 3);
+		assertThat(distances).containsEntry(2, 1);
+		assertThat(distances).containsEntry(3, 4);
 	}
 
 	@Test
@@ -45,8 +43,8 @@ class DijkstraTest {
 		dijkstra.addEdge(0, 1, 1); // добавляем только одно ребро
 
 		Map<Integer, Integer> distances = dijkstra.shortestPath(0);
-		Assertions.assertThat(distances).containsEntry(0, 0);
-		Assertions.assertThat(distances).containsEntry(1, 1);
+		assertThat(distances).containsEntry(0, 0);
+		assertThat(distances).containsEntry(1, 1);
 	}
 
 	@Test
@@ -56,15 +54,15 @@ class DijkstraTest {
 		dijkstra.addEdge(2, 3, 1);
 
 		Map<Integer, Integer> distances = dijkstra.shortestPath(0);
-		Assertions.assertThat(distances).containsEntry(0, 0);
-		Assertions.assertThat(distances).containsEntry(1, 1);
-		Assertions.assertThat(distances).containsEntry(2, Integer.MAX_VALUE);
+		assertThat(distances).containsEntry(0, 0);
+		assertThat(distances).containsEntry(1, 1);
+		assertThat(distances).containsEntry(2, Integer.MAX_VALUE);
 	}
 
 	@Test
 	public void testShortestPath_WithNegativeWeight_ShouldThrowException() {
 		Dijkstra dijkstra = new Dijkstra();
-		Assertions.assertThatThrownBy(() -> dijkstra.addEdge(0, 1, -1))
+		assertThatThrownBy(() -> dijkstra.addEdge(0, 1, -1))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("Величина не может быть отрицательной");
 	}
@@ -74,6 +72,6 @@ class DijkstraTest {
 		Dijkstra dijkstra = new Dijkstra();
 
 		Map<Integer, Integer> distances = dijkstra.shortestPath(0);
-		Assertions.assertThat(distances).isEmpty();
+		assertThat(distances).isEmpty();
 	}
 }

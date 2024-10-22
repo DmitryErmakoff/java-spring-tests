@@ -1,4 +1,4 @@
-package ru.d3m4k.javaspringtests.controller;
+package ru.d3m4k.javaspringtests;
 
 
 import lombok.SneakyThrows;
@@ -14,7 +14,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import org.testcontainers.utility.DockerImageName;
-import ru.d3m4k.javaspringtests.entity.Car;
 import ru.d3m4k.javaspringtests.repository.CarRepository;
 
 import static org.assertj.core.api.Assertions.*;
