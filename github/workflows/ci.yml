@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run tests and check coverage
+        run: mvn test jacoco:report
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(grep -oP '(?<=<\/ratio>)(.*?)(?=<\/coverage>)' target/site/jacoco/jacoco.xml | awk '{print int($1*100)}')
+          if [ "$COVERAGE" -lt 70 ]; then
+            echo "Покрытие тестами ниже 70%: $COVERAGE%"
+            exit 1
+          else
+            echo "Покрытие тестами: $COVERAGE%"
+          fi
