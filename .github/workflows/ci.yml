@@ -27,7 +27,12 @@ jobs:
 
       - name: Check coverage threshold
         run: |
-          COVERAGE=$(grep -oP '(?<=<\/ratio>)(.*?)(?=<\/coverage>)' target/site/jacoco/jacoco.xml | awk '{print int($1*100)}')
+          COVERAGE=$(grep -oP '(?<=<ratio>)(.*?)(?=</ratio>)' target/site/jacoco/jacoco.xml | awk '{print int($1*100)}')
+          echo "COVERAGE: $COVERAGE"
+          if [ -z "$COVERAGE" ]; then
+            echo "Ошибка: не удалось получить покрытие тестами."
+            exit 1
+          fi
           if [ "$COVERAGE" -lt 70 ]; then
             echo "Покрытие тестами ниже 70%: $COVERAGE%"
             exit 1
