@@ -25,11 +25,14 @@ jobs:
       - name: Run tests and check coverage
         run: mvn test jacoco:report
 
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+
       - name: Check coverage threshold
         run: |
-          COVERED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/attribute::covered)' target/site/jacoco/jacoco.xml)
-          MISSED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/attribute::missed)' target/site/jacoco/jacoco.xml)
-
+          COVERED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/@covered)' target/site/jacoco/jacoco.xml)
+          MISSED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/@missed)' target/site/jacoco/jacoco.xml)
+          
           if [ -z "$COVERED" ] || [ -z "$MISSED" ]; then
             echo "Ошибка: не удалось получить покрытие тестами."
             exit 1
