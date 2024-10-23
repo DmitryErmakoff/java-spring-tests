@@ -30,19 +30,21 @@ jobs:
 
       - name: Check coverage threshold
         run: |
+          # Вычисление покрытия
           COVERED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/@covered)' target/site/jacoco/jacoco.xml)
           MISSED=$(xmllint --xpath 'sum(//counter[@type="INSTRUCTION"]/@missed)' target/site/jacoco/jacoco.xml)
-          
+
           if [ -z "$COVERED" ] || [ -z "$MISSED" ]; then
             echo "Ошибка: не удалось получить покрытие тестами."
             exit 1
           fi
 
+          # Общий процент покрытия
           TOTAL=$((COVERED + MISSED))
           COVERAGE=$((COVERED * 100 / TOTAL))
 
           echo "Покрытие тестами: $COVERAGE%"
           if [ "$COVERAGE" -lt 70 ]; then
             echo "Покрытие тестами ниже 70%: $COVERAGE%"
-            exit 1
+            exit 1  # Остановка пайплайна при недостаточном покрытии
           fi
