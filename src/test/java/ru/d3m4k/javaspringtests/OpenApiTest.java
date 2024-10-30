@@ -3,35 +3,13 @@ package ru.d3m4k.javaspringtests;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@Testcontainers
 public class OpenApiTest {
 
-    @Container
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            DockerImageName.parse("postgres:latest")
-    );
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-        registry.add("spring.jpa.generate-ddl", () -> true);
-    }
-
     @Test
-    public void shouldReturnHelloMessage_WhenSendingGetRequest() {
+    public void shouldReturnHelloMessageWhenSendingGetRequest() {
         String expectedResult = "Hello, someone";
 
         Response response = RestAssured
@@ -43,7 +21,7 @@ public class OpenApiTest {
     }
 
     @Test
-    public void shouldAddPetSuccessfully_WhenProvidingValidPetData() {
+    public void shouldAddPetSuccessfullyWhenProvidingValidPetData() {
         String jsonBody = "{\n" +
                 "  \"id\": 0,\n" +
                 "  \"category\": {\n" +

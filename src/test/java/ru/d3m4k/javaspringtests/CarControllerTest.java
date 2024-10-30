@@ -9,17 +9,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import org.testcontainers.utility.DockerImageName;
+import ru.d3m4k.javaspringtests.entity.Car;
 import ru.d3m4k.javaspringtests.repository.CarRepository;
 
 import static org.assertj.core.api.Assertions.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
 
 @Testcontainers
 @SpringBootTest
@@ -48,10 +52,10 @@ class CarControllerTest {
     @Test
     @SneakyThrows
     void saveCar() {
-       var result = mvc.perform(get("http://localhost:8080"))
+       MvcResult result = mvc.perform(get("http://localhost:8080"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
-       var cars = carRepository.findAll();
+       List<Car> cars = carRepository.findAll();
        assertThat(cars).isNotEmpty();
        assertThat(result.getResponse().getContentAsString())
                .isEqualTo(new ObjectMapper().writeValueAsString(cars));
