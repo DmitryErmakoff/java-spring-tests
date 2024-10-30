@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.TestConfiguration;
 import ru.d3m4k.javaspringtests.algorithm.Dijkstra;
-import ru.d3m4k.javaspringtests.repository.CarRepository;
 
 import java.util.Map;
 
